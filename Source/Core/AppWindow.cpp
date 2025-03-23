@@ -29,8 +29,19 @@ namespace KKAM::Core {
 		Height_ = WinSettings.Height;
 		Title_.assign(WinSettings.Title.begin(), WinSettings.Title.end());
 
+		RegisterProc(WM_SIZING, "WindowResize");
+		RegisterProc(WM_SIZE, "WindowResize");
+
+		HookProc("WindowResize", "BaseWindowResize", [this](UINT Msg, WPARAM wParam, LPARAM lParam) {
+			Width_ = LOWORD(lParam);
+			Height_ = HIWORD(lParam);
+			}
+		);
+
 		ShowWindow(WinHWND_, SW_SHOW);
 		UpdateWindow(WinHWND_);
+
+		Initialized_ = true;
 
 		return true;
 	}
@@ -54,11 +65,15 @@ namespace KKAM::Core {
 			WinHWND_ = NULL;
 		}
 	}
-	void AppWindow::RegisterProc(UINT Msg, string ProcName) {
-		Procs_[ProcName] = WinProcHook{ Msg, {} };
+	void AppWindow::RegisterProc(UINT Msg, string ProcName, bool Override) {
+		Procs_[ProcName] = WinProcHook{ Msg, {}, Override };
 	}
 	void AppWindow::HookProc(string ProcName, string HookName, std::function<void(UINT, WPARAM, LPARAM)> Proc) {
-		Procs_[ProcName].Procs.push_back(Proc);
+		for (auto& [proc, hookData] : Procs_) {
+			if (proc == ProcName) {
+				hookData.Procs.push_back(Proc);
+			}
+		}
 	}
 
 	LRESULT CALLBACK AppWindow::WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -79,6 +94,9 @@ namespace KKAM::Core {
 					for (auto& procFunc : hookData.Procs) {
 
 						procFunc(msg, wParam, lParam);
+					}
+					if (hookData.Override) {
+						return 0;
 					}
 				}
 			}

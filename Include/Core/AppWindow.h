@@ -19,6 +19,7 @@ namespace KKAM::Core {
 	struct WinProcHook {
 		UINT Msg;
 		std::vector<std::function<void(UINT, WPARAM, LPARAM)>> Procs;
+		bool Override = false;
 	};
 
 	enum class WinEvProcResult {
@@ -45,13 +46,15 @@ namespace KKAM::Core {
 		/// </summary>
 		void Shutdown();
 		/// <summary>
-		/// Registers a process message under the provided name, and calls all functions hooked onto that name
+		/// Registers a process for the provided message, and calls the provided function when the message is received.
+		/// <para>If Override is true, the function will override the default window procedure behavior for this message.</para>
 		/// </summary>
 		/// <param name="Msg"></param>
 		/// <param name="ProcName"></param>
-		void RegisterProc(UINT Msg, string ProcName);
+		/// <param name="Override"></param>
+		void RegisterProc(UINT Msg, string ProcName, bool Override = false);
 		/// <summary>
-		/// Creates a function with a unique name, and hooks it to the provided process name
+		/// Creates a hook for the provided process name, and calls the provided function when the message is received
 		/// </summary>
 		/// <param name="ProcName"></param>
 		/// <param name="HookName"></param>
@@ -82,6 +85,7 @@ namespace KKAM::Core {
 		int GetDPI() const { return DPI_; }
 		bool IsRunning() const { return IsRunning_; }
 		bool IsShuttingDown() const { return IsShuttingDown_; }
+		bool IsInitialized() const { return Initialized_; }
 		const string& GetTitle() const { return Title_; }
 	private:
 		// Window Objects
@@ -92,6 +96,7 @@ namespace KKAM::Core {
 		// Window variables
 		std::unordered_map<string, WinProcHook> Procs_;
 
+		bool Initialized_ = false;
 		bool IsRunning_ = false;
 		bool IsShuttingDown_ = false;
 

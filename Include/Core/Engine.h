@@ -3,8 +3,14 @@
 #include <memory>
 #include <iostream>
 #include "Core/AppWindow.h"
+#include "Graphics/IGraphics.h"
+
+#include "Graphics/DirectX11/DX11Graphics.h"
+#include "Graphics/DirectX11/DX11Geometry.h"
 
 namespace KKAM::Core {
+	using DX11 = KKAM::Graphics::DX11Graphics;
+	using DX11Geometry = KKAM::Graphics::DX11Geometry;
 	class Engine {
 	public:
 		/// <summary>
@@ -27,8 +33,16 @@ namespace KKAM::Core {
 		/// Handles engine render loop
 		/// </summary>
 		void Render();
+
+		// Getters
+
+		bool IsRunning() const { return IsRunning_; }
+		std::shared_ptr<AppWindow> GetAppWindow() const { return AppWindow_; }
 	private:
 		std::shared_ptr<AppWindow> AppWindow_;
+		std::shared_ptr<DX11> Graphics_;
 		bool IsRunning_ = false;
+
+		DX11Geometry* Geometry_;
 	};
 }

@@ -11,10 +11,11 @@ int WINAPI WinMain(
 )
 {
     try {
-		auto engine = std::make_unique<Engine>();
+        auto* engine = new Engine();
 		engine->Initialize();
 		engine->Run();
 		engine->Shutdown();
+		delete engine;
         return 0;
 	}
     catch (const std::exception& e) {
