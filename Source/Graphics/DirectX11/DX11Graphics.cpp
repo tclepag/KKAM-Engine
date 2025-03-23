@@ -271,10 +271,6 @@ namespace KKAM::Graphics {
 		UINT width = static_cast<UINT>(window->GetWidth());
 		UINT height = static_cast<UINT>(window->GetHeight());
 
-		OutputDebugStringA(("Creating viewport with dimensions: " +
-			std::to_string(width) + " x " +
-			std::to_string(height) + "\n").c_str());
-
 		// Setup viewport - you should get these dimensions from your window
 		Viewport_.Width = width;
 		Viewport_.Height = height;
@@ -311,10 +307,6 @@ namespace KKAM::Graphics {
 
 		// Get the back buffer texture
 		ComPtr<ID3D11Texture2D> depthStencilTexture;
-
-		OutputDebugStringA(("Creating depth stencil with dimensions: " +
-			std::to_string(Viewport_.Width) + " x " +
-			std::to_string(Viewport_.Height) + "\n").c_str());
 
 		D3D11_TEXTURE2D_DESC descDepth = {};
 		descDepth.Width = Viewport_.Width;

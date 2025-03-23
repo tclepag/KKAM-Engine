@@ -53,6 +53,20 @@ namespace KKAM::Graphics {
 		if (FAILED(hr)) {
 			throw std::runtime_error("Failed to create input layout");
 		}
+
+		D3D11_BUFFER_DESC transformBufferDesc = {};
+		transformBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		transformBufferDesc.ByteWidth = sizeof(TransformBufferType); // Define this struct
+		transformBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		transformBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		transformBufferDesc.MiscFlags = 0;
+		transformBufferDesc.StructureByteStride = 0;
+
+		hr = Device_->CreateBuffer(&transformBufferDesc, nullptr, TransformBuffer_.GetAddressOf());
+		if (FAILED(hr)) {
+			throw std::runtime_error("Failed to create transform constant buffer");
+		}
+
 		// Load and compile pixel shader
 		ComPtr<ID3DBlob> pixelShaderBlob;
 		hr = D3DCompileFromFile(
@@ -81,10 +95,34 @@ namespace KKAM::Graphics {
 		}
 	}
 
+	void DX11Shader::SetTransformationMatrices(const DirectX::XMMATRIX& world,
+		const DirectX::XMMATRIX& view,
+		const DirectX::XMMATRIX& projection) {
+		// Map the constant buffer
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		HRESULT hr = DeviceContext_->Map(TransformBuffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		if (FAILED(hr)) {
+			throw std::runtime_error("Failed to map transformation constant buffer");
+		}
+
+		// Copy the matrices to the constant buffer
+		TransformBufferType* transformData = (TransformBufferType*)mappedResource.pData;
+		transformData->World = DirectX::XMMatrixTranspose(world);  // DirectX expects matrices transposed for HLSL
+		transformData->View = DirectX::XMMatrixTranspose(view);
+		transformData->Projection = DirectX::XMMatrixTranspose(projection);
+
+		// Unmap the constant buffer
+		DeviceContext_->Unmap(TransformBuffer_.Get(), 0);
+
+		// Set the constant buffer to the vertex shader
+		DeviceContext_->VSSetConstantBuffers(0, 1, TransformBuffer_.GetAddressOf());
+	}
+
 	void DX11Shader::Bind(ID3D11DeviceContext* context) {
 		context->IASetInputLayout(InputLayout_.Get());
 		context->VSSetShader(VertexShader_.Get(), nullptr, 0);
 		context->PSSetShader(PixelShader_.Get(), nullptr, 0);
+		context->VSSetConstantBuffers(0, 1, TransformBuffer_.GetAddressOf());
 	}
 
 	void DX11Shader::Unbind(ID3D11DeviceContext* context) {

@@ -21,6 +21,7 @@ namespace KKAM::Graphics {
 	}
 	void DX11Geometry::Draw() {
 		if (Shader_) {
+			Shader_->SetTransformationMatrices(WorldMatrix_, ViewMatrix_, ProjectionMatrix_);
 			Shader_->Bind(DeviceContext_.Get());
 		}
 		VertexBuffer_->Bind(DeviceContext_.Get());
@@ -51,5 +52,13 @@ namespace KKAM::Graphics {
 		if (Shader_) {
 			Shader_->SetFragmentPath(path);
 		}
+	}
+
+	void DX11Geometry::SetTransformMatrices(const DirectX::XMMATRIX& world,
+		const DirectX::XMMATRIX& view,
+		const DirectX::XMMATRIX& projection) {
+		WorldMatrix_ = world;
+		ViewMatrix_ = view;
+		ProjectionMatrix_ = projection;
 	}
 }

@@ -3,11 +3,21 @@
 #include "Graphics/IShader.h"
 
 namespace KKAM::Graphics {
+
+	struct TransformBufferType {
+		DirectX::XMMATRIX World;
+		DirectX::XMMATRIX View;
+		DirectX::XMMATRIX Projection;
+	};
+
 	class DX11Shader : public IShader<ID3D11DeviceContext*> {
 	public:
 		DX11Shader(ID3D11Device* device);
 		~DX11Shader();
 		void Create() override;
+		void SetTransformationMatrices(const DirectX::XMMATRIX& world,
+			const DirectX::XMMATRIX& view,
+			const DirectX::XMMATRIX& projection) override;
 		void Bind(ID3D11DeviceContext*) override;
 		void Unbind(ID3D11DeviceContext*) override;
 		void SetVertexPath(const std::wstring& path) override;
@@ -19,5 +29,6 @@ namespace KKAM::Graphics {
 		ComPtr<ID3D11VertexShader> VertexShader_;
 		ComPtr<ID3D11PixelShader> PixelShader_;
 		ComPtr<ID3D11InputLayout> InputLayout_;
+		ComPtr<ID3D11Buffer> TransformBuffer_;
 	};
 }

@@ -69,6 +69,12 @@ namespace KKAM::Core {
 			Graphics_->Shutdown();
 			Graphics_.reset();
 		}
+
+		if (Geometry_) {
+			Geometry_->Release();
+			delete Geometry_;
+			Geometry_ = nullptr;
+		}
 	}
 	void Engine::Update() {
 		WinEvProcResult result = AppWindow_->Process();
@@ -84,6 +90,27 @@ namespace KKAM::Core {
 	}
 	void Engine::Render() {
 		Graphics_->Render([this]() {
+			float aspectRatio = static_cast<float>(AppWindow_->GetWidth()) / static_cast<float>(AppWindow_->GetHeight());
+			DirectX::XMMATRIX projMatrix = DirectX::XMMatrixPerspectiveFovLH(
+				DirectX::XM_PIDIV4,  // 45 degrees field of view
+				aspectRatio,
+				0.1f,                // Near plane
+				1000.0f              // Far plane
+			);
+
+			// Create hardcoded view matrix (camera positioned at (0, 0, -5) looking at origin)
+			DirectX::XMVECTOR eyePosition = DirectX::XMVectorSet(0.0f, 0.0f, -5.0f, 1.0f);
+			DirectX::XMVECTOR lookAtPosition = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+			DirectX::XMVECTOR upDirection = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixLookAtLH(eyePosition, lookAtPosition, upDirection);
+
+			// Create model/world matrix (identity for now, or add transformations)
+			DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixIdentity();
+			// If you want to translate/rotate/scale your model:
+			// DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+			// DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixRotationY(angle);
+
+			Geometry_->SetTransformMatrices(worldMatrix, viewMatrix, projMatrix);
 			Geometry_->Draw();
 			});
 	}

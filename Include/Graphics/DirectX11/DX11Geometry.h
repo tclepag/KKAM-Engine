@@ -19,6 +19,10 @@ namespace KKAM::Graphics {
 		void SetData(VertexArray Vertices, Indices Indices) override;
 		void SetVertexPath(const std::wstring& path) override;
 		void SetFragmentPath(const std::wstring& path) override;
+		void SetTransformMatrices(const DirectX::XMMATRIX& world,
+			const DirectX::XMMATRIX& view,
+			const DirectX::XMMATRIX& projection) override;
+
 	private:
 		ID3D11Device* Device_;
 		ComPtr<ID3D11DeviceContext> DeviceContext_;
