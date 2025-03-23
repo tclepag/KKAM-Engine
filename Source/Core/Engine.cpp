@@ -5,12 +5,21 @@ namespace KKAM::Core {
 		AppWindowSettings settings{};
 		settings.Width = 1280;
 		settings.Height = 720;
-		settings.Title = "KKAM Engine";
+		settings.Title = L"KKAM Engine";
 
 		AppWindow_ = std::make_shared<AppWindow>();
 		AppWindow_->Initialize(settings);
+
+		// Setup window hooks
+
+		AppWindow_->RegisterProc(WM_CLOSE, "WindowClose");
+		AppWindow_->HookProc("WindowClose", "BaseWindowClose", [this](UINT Msg, WPARAM wParam, LPARAM lParam) {
+			IsRunning_ = false;
+			}
+		);
 	}
 	void Engine::Run() {
+		IsRunning_ = true;
 		while (IsRunning_) {
 			Update();
 			Render();
@@ -23,7 +32,16 @@ namespace KKAM::Core {
 		}
 	}
 	void Engine::Update() {
-		AppWindow_->Process();
+		WinEvProcResult result = AppWindow_->Process();
+
+		if (result == WinEvProcResult::ERR) {
+			std::cerr << "Error processing window events" << std::endl;
+			return;
+		}
+
+		if (result == WinEvProcResult::SHUTDOWN) {
+			IsRunning_ = false;
+		}
 	}
 	void Engine::Render() {
 		// Rendering logic goes here

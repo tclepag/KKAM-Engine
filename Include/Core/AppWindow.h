@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <vector>
+#include <iostream>
 #include <unordered_map>
 #include <functional>
 #include <string>
@@ -17,7 +18,7 @@ namespace KKAM::Core {
 
 	struct WinProcHook {
 		UINT Msg;
-		std::vector<std::function<LRESULT(UINT, WPARAM, LPARAM)>> Procs;
+		std::vector<std::function<void(UINT, WPARAM, LPARAM)>> Procs;
 	};
 
 	enum class WinEvProcResult {
@@ -55,7 +56,7 @@ namespace KKAM::Core {
 		/// <param name="ProcName"></param>
 		/// <param name="HookName"></param>
 		/// <param name="Proc"></param>
-		void HookProc(string ProcName, string HookName, std::function<LRESULT(UINT, WPARAM, LPARAM)> Proc);
+		void HookProc(string ProcName, string HookName, std::function<void(UINT, WPARAM, LPARAM)> Proc);
 
 		/// <summary>
 		/// Get monitor-aware information
@@ -81,7 +82,7 @@ namespace KKAM::Core {
 		int GetDPI() const { return DPI_; }
 		bool IsRunning() const { return IsRunning_; }
 		bool IsShuttingDown() const { return IsShuttingDown_; }
-		const string& GetTitle() const { return Title; }
+		const string& GetTitle() const { return Title_; }
 	private:
 		// Window Objects
 		HWND WinHWND_ = nullptr;
@@ -96,7 +97,7 @@ namespace KKAM::Core {
 
 		int Width_ = 800;
 		int Height_ = 600;
-		string Title = "NULL";
+		string Title_ = "NULL";
 
 		int DPI_ = 0;
 

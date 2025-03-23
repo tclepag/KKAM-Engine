@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <iostream>
 #include "Core/AppWindow.h"
 
 namespace KKAM::Core {
@@ -28,7 +29,6 @@ namespace KKAM::Core {
 		void Render();
 	private:
 		std::shared_ptr<AppWindow> AppWindow_;
-
-		bool IsRunning_;
+		bool IsRunning_ = false;
 	};
 }
