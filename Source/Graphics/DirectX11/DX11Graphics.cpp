@@ -12,7 +12,25 @@ namespace KKAM::Graphics {
 		CreateBlendState();
 		CreateDepthStencilState();
 		CreatePresentParams();
+		InitializeImGui();       // Finally, initialize ImGui
 	}
+
+	void DX11Graphics::InitializeImGui() {
+		ImGui::CreateContext();
+		ImGui_ImplWin32_Init(Engine_->GetAppWindow()->GetHWND());
+		ImGui_ImplDX11_Init(Device_.Get(), DeviceContext_.Get());
+
+		ImGuiIO& io = ImGui::GetIO();
+
+		// Disable ImGui's automatic DPI scaling
+		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+		io.ConfigWindowsResizeFromEdges = false;
+
+		// Force pixel-perfect scaling
+		io.FontGlobalScale = 1.0f;
+
+	}
+
 	void DX11Graphics::Redraw() {
 		Render(nullptr);
 	}
@@ -45,6 +63,15 @@ namespace KKAM::Graphics {
 		Render(LastRenderOperation_);
 	}
 	void DX11Graphics::Render(std::function<void()> RenderOperation) {
+		if (!RenderActive_) {
+			// Skip rendering if not active
+			return;
+		}
+
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+
 		if (RenderOperation == nullptr) {
 			RenderOperation = LastRenderOperation_;
 		}
@@ -67,6 +94,13 @@ namespace KKAM::Graphics {
 		if (RenderOperation) {
 			RenderOperation();
 		}
+
+		ImGuiIO& io = ImGui::GetIO();
+		io.DisplaySize = ImVec2(static_cast<float>(Engine_->GetAppWindow()->GetWidth()), static_cast<float>(Engine_->GetAppWindow()->GetHeight()));
+
+		// Render ImGui
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 		SwapChain_->Present(1, 0);
 		LastRenderOperation_ = RenderOperation;

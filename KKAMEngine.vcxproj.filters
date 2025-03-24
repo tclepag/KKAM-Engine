@@ -46,14 +46,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="KKAMEngine.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Include\Core\Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,6 +85,9 @@
     <ClInclude Include="Include\Graphics\DirectX11\DX11Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Docs\lgpl-3.0.txt" />
@@ -104,5 +99,13 @@
   <ItemGroup>
     <FxCompile Include="Content\Shaders\Basic.hlsl" />
     <FxCompile Include="Content\Shaders\BasicPixel.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="KKAMEngine.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -38,11 +38,21 @@ namespace KKAM::Core {
 
 		bool IsRunning() const { return IsRunning_; }
 		std::shared_ptr<AppWindow> GetAppWindow() const { return AppWindow_; }
+		std::shared_ptr<DX11> GetGraphics() const { return Graphics_; }
+		float GetDeltaTime() const { return DeltaTime_; }
 	private:
 		std::shared_ptr<AppWindow> AppWindow_;
 		std::shared_ptr<DX11> Graphics_;
 		bool IsRunning_ = false;
 
+		float RotAngle_ = 0.0f;
+
+		float DeltaTime_ = 0.0f;
+		std::chrono::steady_clock::time_point LastTime_ = std::chrono::steady_clock::now();
+
+
 		DX11Geometry* Geometry_;
+
+		void DrawGeometry();
 	};
 }

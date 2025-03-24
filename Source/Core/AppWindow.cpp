@@ -12,6 +12,7 @@ namespace KKAM::Core {
 		wc.hInstance = GetModuleHandle(NULL);
 		wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+		wc.hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_KKAMENGINE));
 		wc.lpfnWndProc = &AppWindow::WinProc;
 
 		if (!RegisterClassEx(&wc)) {
@@ -31,12 +32,18 @@ namespace KKAM::Core {
 
 		RegisterProc(WM_SIZING, "WindowResize");
 		RegisterProc(WM_SIZE, "WindowResize");
+		RegisterProc(WM_GETMINMAXINFO, "WindowLimits", true);
 
 		HookProc("WindowResize", "BaseWindowResize", [this](UINT Msg, WPARAM wParam, LPARAM lParam) {
 			Width_ = LOWORD(lParam);
 			Height_ = HIWORD(lParam);
-			}
-		);
+			});
+
+		HookProc("WindowLimits", "BaseWindowLimits", [this](UINT Msg, WPARAM wParam, LPARAM lParam) {
+			LPMINMAXINFO lpMMI = (LPMINMAXINFO)lParam;
+			lpMMI->ptMinTrackSize.x = 800;
+			lpMMI->ptMinTrackSize.y = 600;
+			});
 
 		ShowWindow(WinHWND_, SW_SHOW);
 		UpdateWindow(WinHWND_);

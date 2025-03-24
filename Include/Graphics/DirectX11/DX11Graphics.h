@@ -28,6 +28,8 @@ namespace KKAM::Graphics {
 		ComPtr<ID3D11BlendState> GetBlendState() const { return BlendState_; }
 		DXGI_PRESENT_PARAMETERS GetPresentParams() const { return PresentParams_; }
 		D3D11_VIEWPORT GetViewport() const { return Viewport_; }
+	protected:
+		void InitializeImGui() override;
 	private:
 		ComPtr<IDXGISwapChain> SwapChain_;
 		ComPtr<ID3D11Device> Device_;

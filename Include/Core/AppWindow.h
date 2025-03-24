@@ -1,11 +1,8 @@
 #pragma once
 
-#include <Windows.h>
-#include <vector>
-#include <iostream>
-#include <unordered_map>
-#include <functional>
-#include <string>
+#include "../resource.h"
+
+#include "Common/Common.h"
 
 namespace KKAM::Core {
 	using std::string;
@@ -82,6 +79,7 @@ namespace KKAM::Core {
 		HMONITOR GetMonitor() const { return WinMonitor_; }
 		int GetWidth() const { return Width_; }
 		int GetHeight() const { return Height_; }
+		float GetAspectRatio() const { return static_cast<float>(Width_) / static_cast<float>(Height_); }
 		int GetDPI() const { return DPI_; }
 		bool IsRunning() const { return IsRunning_; }
 		bool IsShuttingDown() const { return IsShuttingDown_; }

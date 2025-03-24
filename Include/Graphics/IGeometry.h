@@ -13,14 +13,23 @@ namespace KKAM::Graphics {
 		virtual void SetData(VertexArray Vertices, Indices Indices) = 0;
 		virtual void SetVertexPath(const std::wstring& path) = 0;
 		virtual void SetFragmentPath(const std::wstring& path) = 0;
-		virtual void SetTransformMatrices(const DirectX::XMMATRIX& world,
-			const DirectX::XMMATRIX& view,
-			const DirectX::XMMATRIX& projection) = 0;
+		virtual void SetTransformMatrices(const glm::mat4& world,
+			const glm::mat4& view,
+			const glm::mat4& projection) = 0;
+		virtual void SetWorldMatrix(const glm::mat4& world) = 0;
+		virtual void SetViewMatrix(const glm::mat4& view) = 0;
+		virtual void SetProjectionMatrix(const glm::mat4& projection) = 0;
+
+		// Getters
+
+		glm::mat4 GetWorldMatrix() const { return WorldMatrix_; }
+		glm::mat4 GetViewMatrix() const { return ViewMatrix_; }
+		glm::mat4 GetProjectionMatrix() const { return ProjectionMatrix_; }
 	protected:
 		std::wstring VertexPath_;
 		std::wstring FragmentPath_;
-		DirectX::XMMATRIX WorldMatrix_;
-		DirectX::XMMATRIX ViewMatrix_;
-		DirectX::XMMATRIX ProjectionMatrix_;
+		glm::mat4 WorldMatrix_;
+		glm::mat4 ViewMatrix_;
+		glm::mat4 ProjectionMatrix_;
 	};
 } // namespace KKAM::Graphics

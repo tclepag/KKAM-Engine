@@ -54,11 +54,24 @@ namespace KKAM::Graphics {
 		}
 	}
 
-	void DX11Geometry::SetTransformMatrices(const DirectX::XMMATRIX& world,
-		const DirectX::XMMATRIX& view,
-		const DirectX::XMMATRIX& projection) {
+	void DX11Geometry::SetTransformMatrices(const glm::mat4& world,
+		const glm::mat4& view,
+		const glm::mat4& projection) {
 		WorldMatrix_ = world;
 		ViewMatrix_ = view;
 		ProjectionMatrix_ = projection;
 	}
+
+	void DX11Geometry::SetWorldMatrix(const glm::mat4& world) {
+		WorldMatrix_ = world;
+	}
+
+	void DX11Geometry::SetViewMatrix(const glm::mat4& view) {
+		ViewMatrix_ = view;
+	}
+
+	void DX11Geometry::SetProjectionMatrix(const glm::mat4& projection) {
+		ProjectionMatrix_ = projection;
+	}
+
 }

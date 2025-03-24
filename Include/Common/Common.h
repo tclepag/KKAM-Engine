@@ -13,7 +13,18 @@
 #include <d3d11_1.h>
 #include <d3d11_3.h>
 #include <d3dcompiler.h>
-#include <DirectXMath.h>
+
+// Third Party
+// GLM
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/common.hpp>
+
+// ImGui
+#include <imgui.h>
+#include <imgui_impl_dx11.h>
+#include <imgui_impl_win32.h>
 
 // Wrl
 #include <wrl/client.h>

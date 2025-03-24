@@ -95,9 +95,9 @@ namespace KKAM::Graphics {
 		}
 	}
 
-	void DX11Shader::SetTransformationMatrices(const DirectX::XMMATRIX& world,
-		const DirectX::XMMATRIX& view,
-		const DirectX::XMMATRIX& projection) {
+	void DX11Shader::SetTransformationMatrices(const glm::mat4& world,
+		const glm::mat4& view,
+		const glm::mat4& projection) {
 		// Map the constant buffer
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		HRESULT hr = DeviceContext_->Map(TransformBuffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -107,9 +107,9 @@ namespace KKAM::Graphics {
 
 		// Copy the matrices to the constant buffer
 		TransformBufferType* transformData = (TransformBufferType*)mappedResource.pData;
-		transformData->World = DirectX::XMMatrixTranspose(world);  // DirectX expects matrices transposed for HLSL
-		transformData->View = DirectX::XMMatrixTranspose(view);
-		transformData->Projection = DirectX::XMMatrixTranspose(projection);
+		transformData->World = glm::transpose(world);  // DirectX expects matrices transposed for HLSL
+		transformData->View = glm::transpose(view);
+		transformData->Projection = glm::transpose(projection);
 
 		// Unmap the constant buffer
 		DeviceContext_->Unmap(TransformBuffer_.Get(), 0);
