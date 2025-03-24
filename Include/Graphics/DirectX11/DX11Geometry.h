@@ -10,15 +10,15 @@
 namespace KKAM::Graphics {
 	class DX11Geometry : public IGeometry {
 	public:
-		DX11Geometry(ID3D11Device* Device);
+		DX11Geometry(Engine* Engine, ID3D11Device* Device);
 		~DX11Geometry();
 		void Create() override;
 		void Rebake() override;
 		void Draw() override;
 		void Release() override;
 		void SetData(VertexArray Vertices, Indices Indices) override;
-		void SetVertexPath(const std::wstring& path) override;
-		void SetFragmentPath(const std::wstring& path) override;
+		void SetVertexPath(const std::string& path) override;
+		void SetFragmentPath(const std::string& path) override;
 		void SetTransformMatrices(const glm::mat4& world,
 			const glm::mat4& view,
 			const glm::mat4& projection) override;

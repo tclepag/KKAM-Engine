@@ -1,11 +1,12 @@
 #include "Graphics/DirectX11/DX11Geometry.h"
+#include "Core/Engine.h"
 
 namespace KKAM::Graphics {
-	DX11Geometry::DX11Geometry(ID3D11Device* Device)
-		: Device_(Device) {
+	DX11Geometry::DX11Geometry(Engine* Engine, ID3D11Device* Device)
+		: Device_(Device), IGeometry(Engine) {
 		VertexBuffer_ = std::make_unique<DX11VertexBuffer>(Device_);
 		IndexBuffer_ = std::make_unique<DX11IndexBuffer>(Device_);
-		Shader_ = std::make_unique<DX11Shader>(Device_);
+		Shader_ = std::make_unique<DX11Shader>(Engine, Device_);
 		Device_->GetImmediateContext(DeviceContext_.GetAddressOf());
 	}
 	DX11Geometry::~DX11Geometry() {
@@ -40,14 +41,14 @@ namespace KKAM::Graphics {
 		IndexBuffer_->SetData(Indices);
 	}
 
-	void DX11Geometry::SetVertexPath(const std::wstring& path) {
+	void DX11Geometry::SetVertexPath(const std::string& path) {
 		VertexPath_ = path;
 		if (Shader_) {
 			Shader_->SetVertexPath(path);
 		}
 	}
 
-	void DX11Geometry::SetFragmentPath(const std::wstring& path) {
+	void DX11Geometry::SetFragmentPath(const std::string& path) {
 		FragmentPath_ = path;
 		if (Shader_) {
 			Shader_->SetFragmentPath(path);

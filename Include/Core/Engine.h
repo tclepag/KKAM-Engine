@@ -8,6 +8,8 @@
 #include "Graphics/DirectX11/DX11Graphics.h"
 #include "Graphics/DirectX11/DX11Geometry.h"
 
+#include "Common/ImGuiConsole.h"
+
 namespace KKAM::Core {
 	using DX11 = KKAM::Graphics::DX11Graphics;
 	using DX11Geometry = KKAM::Graphics::DX11Geometry;
@@ -40,6 +42,7 @@ namespace KKAM::Core {
 		std::shared_ptr<AppWindow> GetAppWindow() const { return AppWindow_; }
 		std::shared_ptr<DX11> GetGraphics() const { return Graphics_; }
 		float GetDeltaTime() const { return DeltaTime_; }
+		ImGuiConsole& GetConsole() { return Console_; }
 	private:
 		std::shared_ptr<AppWindow> AppWindow_;
 		std::shared_ptr<DX11> Graphics_;
@@ -52,6 +55,7 @@ namespace KKAM::Core {
 
 
 		DX11Geometry* Geometry_;
+		ImGuiConsole Console_;
 
 		void DrawGeometry();
 	};

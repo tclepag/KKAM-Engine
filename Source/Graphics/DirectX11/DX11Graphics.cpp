@@ -17,17 +17,15 @@ namespace KKAM::Graphics {
 
 	void DX11Graphics::InitializeImGui() {
 		ImGui::CreateContext();
-		ImGui_ImplWin32_Init(Engine_->GetAppWindow()->GetHWND());
-		ImGui_ImplDX11_Init(Device_.Get(), DeviceContext_.Get());
 
 		ImGuiIO& io = ImGui::GetIO();
-
-		// Disable ImGui's automatic DPI scaling
-		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-		io.ConfigWindowsResizeFromEdges = false;
-
-		// Force pixel-perfect scaling
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+		io.IniFilename = "Config/imgui.ini";
 		io.FontGlobalScale = 1.0f;
+
+		ImGui_ImplWin32_Init(Engine_->GetAppWindow()->GetHWND());
+		ImGui_ImplDX11_Init(Device_.Get(), DeviceContext_.Get());
 
 	}
 

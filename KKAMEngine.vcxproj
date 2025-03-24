@@ -101,6 +101,22 @@
 dxgi.lib
 ;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>@echo Copying content folders...
+xcopy "$(ProjectDir)Tools\*.*" "$(OutDir)Tools\" /Y /I /E
+xcopy "$(ProjectDir)Docs\*.*" "$(OutDir)Docs\" /Y /I /E
+xcopy "$(ProjectDir)Content\*.*" "$(OutDir)Content\" /Y /I /E
+
+
+call "$(ProjectDir)Tools\move_shaders.bat" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>@echo Cleaning ALL contents from output directory...
+if exist "$(OutDir)" (
+  del /f /s /q "$(OutDir)*.*"
+  for /d %%d in ("$(OutDir)*") do rd /s /q "%%d"
+)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -122,6 +138,22 @@ dxgi.lib
 dxgi.lib
 ;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>@echo Copying content folders...
+xcopy "$(ProjectDir)Tools\*.*" "$(OutDir)Tools\" /Y /I /E
+xcopy "$(ProjectDir)Docs\*.*" "$(OutDir)Docs\" /Y /I /E
+xcopy "$(ProjectDir)Content\*.*" "$(OutDir)Content\" /Y /I /E
+
+
+call "$(ProjectDir)Tools\move_shaders.bat" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>@echo Cleaning ALL contents from output directory...
+if exist "$(OutDir)" (
+  del /f /s /q "$(OutDir)*.*"
+  for /d %%d in ("$(OutDir)*") do rd /s /q "%%d"
+)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -139,6 +171,22 @@ dxgi.lib
 dxgi.lib
 ;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>@echo Copying content folders...
+xcopy "$(ProjectDir)Tools\*.*" "$(OutDir)Tools\" /Y /I /E
+xcopy "$(ProjectDir)Docs\*.*" "$(OutDir)Docs\" /Y /I /E
+xcopy "$(ProjectDir)Content\*.*" "$(OutDir)Content\" /Y /I /E
+
+
+call "$(ProjectDir)Tools\move_shaders.bat" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>@echo Cleaning ALL contents from output directory...
+if exist "$(OutDir)" (
+  del /f /s /q "$(OutDir)*.*"
+  for /d %%d in ("$(OutDir)*") do rd /s /q "%%d"
+)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -160,6 +208,22 @@ dxgi.lib
 dxgi.lib
 ;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>@echo Copying content folders...
+xcopy "$(ProjectDir)Tools\*.*" "$(OutDir)Tools\" /Y /I /E
+xcopy "$(ProjectDir)Docs\*.*" "$(OutDir)Docs\" /Y /I /E
+xcopy "$(ProjectDir)Content\*.*" "$(OutDir)Content\" /Y /I /E
+
+
+call "$(ProjectDir)Tools\move_shaders.bat" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>@echo Cleaning ALL contents from output directory...
+if exist "$(OutDir)" (
+  del /f /s /q "$(OutDir)*.*"
+  for /d %%d in ("$(OutDir)*") do rd /s /q "%%d"
+)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Graphics\DirectX11\DX11Geometry.cpp" />
@@ -176,6 +240,7 @@ dxgi.lib
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Common\Common.h" />
+    <ClInclude Include="Include\Common\ImGuiConsole.h" />
     <ClInclude Include="Include\Core\AppWindow.h" />
     <ClInclude Include="Include\Core\Engine.h" />
     <ClInclude Include="Include\Graphics\DirectX11\DX11Geometry.h" />
@@ -195,16 +260,23 @@ dxgi.lib
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="Tools\move_shaders.bat" />
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Content\Shaders\Basic.hlsl">
+    <FxCompile Include="Content\Shaders\Custom\VertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Content\Shaders\Default\Basic.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="Content\Shaders\BasicPixel.hlsl">
+    <FxCompile Include="Content\Shaders\Default\BasicPixel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

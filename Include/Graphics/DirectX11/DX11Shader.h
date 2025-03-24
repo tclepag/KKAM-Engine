@@ -12,7 +12,7 @@ namespace KKAM::Graphics {
 
 	class DX11Shader : public IShader<ID3D11DeviceContext*> {
 	public:
-		DX11Shader(ID3D11Device* device);
+		DX11Shader(Engine* Engine, ID3D11Device* device);
 		~DX11Shader();
 		void Create() override;
 		void SetTransformationMatrices(const glm::mat4& world,
@@ -20,8 +20,8 @@ namespace KKAM::Graphics {
 			const glm::mat4& projection) override;
 		void Bind(ID3D11DeviceContext*) override;
 		void Unbind(ID3D11DeviceContext*) override;
-		void SetVertexPath(const std::wstring& path) override;
-		void SetFragmentPath(const std::wstring& path) override;
+		void SetVertexPath(const std::string& path) override;
+		void SetFragmentPath(const std::string& path) override;
 		void Release() override;
 	private:
 		ID3D11Device* Device_;

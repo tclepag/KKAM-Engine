@@ -93,10 +93,10 @@ namespace KKAM::Core {
 			1, 3, 2
 		};
 
-		Geometry_ = new DX11Geometry(Graphics_->GetDevice().Get());
+		Geometry_ = new DX11Geometry(this, Graphics_->GetDevice().Get());
 		Geometry_->SetData(triangle, indices);
-		Geometry_->SetVertexPath(L"Content/Shaders/Basic.hlsl");
-		Geometry_->SetFragmentPath(L"Content/Shaders/BasicPixel.hlsl");
+		Geometry_->SetVertexPath("Content/Shaders/Default/Basic");
+		Geometry_->SetFragmentPath("Content/Shaders/Default/BasicPixel");
 		Geometry_->SetWorldMatrix(glm::mat4(1.0f));
 		Geometry_->Create();
 	}
@@ -183,5 +183,7 @@ namespace KKAM::Core {
 		ImGui::Text("FPS: %.1f", 1.0f / DeltaTime_);
 		ImGui::End();
 		ImGui::PopStyleVar();
+
+		Console_.Render();
 	}
 } // namespace KKAM::Core

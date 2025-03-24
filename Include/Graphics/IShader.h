@@ -2,10 +2,16 @@
 
 #include "Common/Common.h"
 
+namespace KKAM::Core {
+	class Engine;
+}
+
 namespace KKAM::Graphics {
+	using KKAM::Core::Engine;
 	template<typename ContextType>
 	class IShader {
 	public:
+		IShader(Engine* engine) : Engine_(engine) {}
 		virtual ~IShader() = default;
 		virtual void Create() = 0;
 		virtual void SetTransformationMatrices(const glm::mat4& world,
@@ -13,11 +19,12 @@ namespace KKAM::Graphics {
 			const glm::mat4& projection) = 0;
 		virtual void Bind(ContextType Context) = 0;
 		virtual void Unbind(ContextType Context) = 0;
-		virtual void SetVertexPath(const std::wstring& path) = 0;
-		virtual void SetFragmentPath(const std::wstring& path) = 0;
+		virtual void SetVertexPath(const std::string& path) = 0;
+		virtual void SetFragmentPath(const std::string& path) = 0;
 		virtual void Release() = 0;
 	protected:
-		std::wstring VertexPath_;
-		std::wstring FragmentPath_;
+		Engine* Engine_;
+		std::string VertexPath_;
+		std::string FragmentPath_;
 	};
 }

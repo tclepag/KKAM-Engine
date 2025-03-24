@@ -1,8 +1,9 @@
 #include "Graphics/DirectX11/DX11Shader.h"
+#include "Core/Engine.h"
 
 namespace KKAM::Graphics {
-	DX11Shader::DX11Shader(ID3D11Device* device)
-		: Device_(device) {
+	DX11Shader::DX11Shader(Engine* Engine, ID3D11Device* device)
+		: Device_(device), IShader(Engine) {
 		Device_->GetImmediateContext(DeviceContext_.GetAddressOf());
 	}
 	DX11Shader::~DX11Shader() {
@@ -12,19 +13,34 @@ namespace KKAM::Graphics {
 		if (VertexPath_.empty() || FragmentPath_.empty()) return;
 		// Load and compile vertex shader
 		ComPtr<ID3DBlob> vertexShaderBlob;
-		HRESULT hr = D3DCompileFromFile(
-			VertexPath_.c_str(),
-			nullptr,
-			nullptr,
-			"main",
-			"vs_5_0",
-			0,
-			0,
-			&vertexShaderBlob,
-			nullptr
-		);
-		if (FAILED(hr)) {
-			throw std::runtime_error("Failed to compile vertex shader");
+		auto vertexHLSLPath = VertexPath_ + ".hlsl";
+		auto vertexCSOPath = VertexPath_ + ".cso";
+		HRESULT hr;
+		if (std::filesystem::exists(vertexCSOPath)) {
+			hr = D3DReadFileToBlob(StringToWString(vertexCSOPath).c_str(), vertexShaderBlob.GetAddressOf());
+			if (FAILED(hr)) {
+				throw std::runtime_error("Failed to read vertex shader from file");
+			}
+			OutputDebugStringA("Vertex shader loaded successfully\n");
+			Engine_->GetConsole().LogInfo("Vertex shader loaded successfully");
+		}
+		else {
+			hr = D3DCompileFromFile(
+				StringToWString(VertexPath_ + ".hlsl").c_str(),
+				nullptr,
+				nullptr,
+				"main",
+				"vs_5_0",
+				0,
+				0,
+				&vertexShaderBlob,
+				nullptr
+			);
+			if (FAILED(hr)) {
+				throw std::runtime_error("Failed to compile vertex shader");
+			}
+			OutputDebugStringA("Vertex shader compiled successfully\n");
+			Engine_->GetConsole().LogInfo("Vertex shader compiled successfully");
 		}
 		// Create vertex shader
 		hr = Device_->CreateVertexShader(
@@ -69,19 +85,34 @@ namespace KKAM::Graphics {
 
 		// Load and compile pixel shader
 		ComPtr<ID3DBlob> pixelShaderBlob;
-		hr = D3DCompileFromFile(
-			FragmentPath_.c_str(),
-			nullptr,
-			nullptr,
-			"main",
-			"ps_5_0",
-			0,
-			0,
-			&pixelShaderBlob,
-			nullptr
-		);
-		if (FAILED(hr)) {
-			throw std::runtime_error("Failed to compile pixel shader");
+		auto pixelHLSLPath = FragmentPath_ + ".hlsl";
+		auto pixelCSOPath = FragmentPath_ + ".cso";
+		if (std::filesystem::exists(pixelCSOPath)) {
+			hr = D3DReadFileToBlob(StringToWString(pixelCSOPath).c_str(), pixelShaderBlob.GetAddressOf());
+			if (FAILED(hr)) {
+				throw std::runtime_error("Failed to read pixel shader from file");
+			}
+
+			OutputDebugStringA("Pixel shader loaded successfully\n");
+			Engine_->GetConsole().LogInfo("Pixel shader loaded successfully");
+		}
+		else {
+			hr = D3DCompileFromFile(
+				StringToWString(FragmentPath_ + ".hlsl").c_str(),
+				nullptr,
+				nullptr,
+				"main",
+				"ps_5_0",
+				0,
+				0,
+				&pixelShaderBlob,
+				nullptr
+			);
+			if (FAILED(hr)) {
+				throw std::runtime_error("Failed to compile pixel shader");
+			}
+			OutputDebugStringA("Pixel shader compiled successfully\n");
+			Engine_->GetConsole().LogInfo("Pixel shader compiled successfully");
 		}
 		// Create pixel shader
 		hr = Device_->CreatePixelShader(
@@ -130,11 +161,11 @@ namespace KKAM::Graphics {
 		context->PSSetShader(nullptr, nullptr, 0);
 	}
 
-	void DX11Shader::SetVertexPath(const std::wstring& path) {
+	void DX11Shader::SetVertexPath(const std::string& path) {
 		VertexPath_ = path;
 	}
 
-	void DX11Shader::SetFragmentPath(const std::wstring& path) {
+	void DX11Shader::SetFragmentPath(const std::string& path) {
 		FragmentPath_ = path;
 	}
 

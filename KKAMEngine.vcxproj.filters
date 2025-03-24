@@ -88,6 +88,9 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Common\ImGuiConsole.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Docs\lgpl-3.0.txt" />
@@ -95,10 +98,14 @@
   <ItemGroup>
     <None Include="cpp.hint" />
     <None Include="vcpkg.json" />
+    <None Include="Tools\move_shaders.bat">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Content\Shaders\Basic.hlsl" />
-    <FxCompile Include="Content\Shaders\BasicPixel.hlsl" />
+    <FxCompile Include="Content\Shaders\Default\Basic.hlsl" />
+    <FxCompile Include="Content\Shaders\Default\BasicPixel.hlsl" />
+    <FxCompile Include="Content\Shaders\Custom\VertexShader.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="KKAMEngine.ico">
