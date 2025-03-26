@@ -4,6 +4,10 @@
 #include <cstdint>
 #include "Ent.h"
 
+namespace Core {
+	class EntManager;
+}
+
 namespace Classes::Engine::Core {
 	class Mod;
 
@@ -15,6 +19,7 @@ namespace Classes::Engine::Core {
 	/// Base class for all scene entities
 	/// </summary>
 	class EntObj : public Ent {
+        friend class ::Core::EntManager;
 	public:
 		// The entity's scene index
 		const SID& SId;

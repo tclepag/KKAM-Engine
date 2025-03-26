@@ -1,6 +1,6 @@
 #include "Graphics/DirectX11/DX11VertexBuffer.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	DX11VertexBuffer::DX11VertexBuffer(ID3D11Device* Device)
 		: Device_(Device) {
 		Device_->GetImmediateContext(DeviceContext_.GetAddressOf());

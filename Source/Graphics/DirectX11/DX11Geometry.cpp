@@ -1,7 +1,7 @@
 #include "Graphics/DirectX11/DX11Geometry.h"
 #include "Core/Engine.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	DX11Geometry::DX11Geometry(Engine* Engine, ID3D11Device* Device)
 		: Device_(Device), IGeometry(Engine) {
 		VertexBuffer_ = std::make_unique<DX11VertexBuffer>(Device_);

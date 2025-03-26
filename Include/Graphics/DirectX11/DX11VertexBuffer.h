@@ -2,7 +2,7 @@
 
 #include "Graphics/IVertexBuffer.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	class DX11VertexBuffer : public IVertexBuffer<ID3D11DeviceContext*> {
 	public:
 		DX11VertexBuffer(ID3D11Device* Device);
@@ -24,4 +24,4 @@ namespace KKAM::Graphics {
 		ComPtr<ID3D11Buffer> VertexBuffer_;
 		VertexArray Vertices_;
 	};
-} // namespace KKAM::Graphics
+} // namespace Graphics

@@ -2,11 +2,11 @@
 
 #include "Graphics/IGraphics.h"
 
-namespace KKAM::Core {
+namespace Core {
 	class Engine;
 }
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	class DX11Graphics : public IGraphics {
 	public:
 		DX11Graphics(Engine* engine) : IGraphics(engine) {}
@@ -54,4 +54,4 @@ namespace KKAM::Graphics {
 		void CreateRenderTargetView();
 		void CreateDepthStencilView();
 	};
-} // namespace KKAM::Graphics
+} // namespace Graphics

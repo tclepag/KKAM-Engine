@@ -1,7 +1,7 @@
 #include "Graphics/DirectX11/DX11Shader.h"
 #include "Core/Engine.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	DX11Shader::DX11Shader(Engine* Engine, ID3D11Device* device)
 		: Device_(device), IShader(Engine) {
 		Device_->GetImmediateContext(DeviceContext_.GetAddressOf());

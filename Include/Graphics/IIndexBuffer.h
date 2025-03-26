@@ -2,7 +2,7 @@
 
 #include "Common/Common.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	template<typename ContextType>
 	class IIndexBuffer {
 	public:
@@ -13,4 +13,4 @@ namespace KKAM::Graphics {
 		virtual void SetData(Indices Indices) = 0;
 		virtual void Release() = 0;
 	};
-} // namespace KKAM::Graphics
+} // namespace Graphics

@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <stdio.h>
 
-namespace KKAM::Core {
+namespace Core {
 	void Engine::Initialize() {
 		// Initialize ImGui
 		IMGUI_CHECKVERSION();
@@ -26,6 +26,9 @@ namespace KKAM::Core {
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // Wait for the window to be initialized
 		}
+
+		// Setup Ent Manager
+		EntManager_ = std::make_shared<EntManager>();
 
 		// Initialize graphics
 		Graphics_ = std::make_shared<DX11>(this);
@@ -190,4 +193,4 @@ namespace KKAM::Core {
 		ImGui::End();
 		ImGui::PopStyleVar();
 	}
-} // namespace KKAM::Core
+} // namespace Core

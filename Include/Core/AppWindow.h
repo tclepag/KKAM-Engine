@@ -4,7 +4,7 @@
 
 #include "Common/Common.h"
 
-namespace KKAM::Core {
+namespace Core {
 	using std::string;
 	using std::wstring;
 	struct AppWindowSettings {
@@ -113,4 +113,4 @@ namespace KKAM::Core {
 
 		static LRESULT CALLBACK WinProc(HWND HWnd, UINT UMsg, WPARAM WParam, LPARAM LParam);
 	};
-} // namespace KKAM::Core
+} // namespace Core

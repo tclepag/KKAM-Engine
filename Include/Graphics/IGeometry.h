@@ -2,12 +2,12 @@
 
 #include "Common/Common.h"
 
-namespace KKAM::Core {
+namespace Core {
 	class Engine;
 }
 
-namespace KKAM::Graphics {
-	using KKAM::Core::Engine;
+namespace Graphics {
+	using Core::Engine;
 	class IGeometry {
 	public:
 		IGeometry(Engine* engine) : Engine_(engine) {}
@@ -39,4 +39,4 @@ namespace KKAM::Graphics {
 		glm::mat4 ViewMatrix_;
 		glm::mat4 ProjectionMatrix_;
 	};
-} // namespace KKAM::Graphics
+} // namespace Graphics

@@ -3,6 +3,10 @@
 #include <cstdint>
 #include <string>
 
+namespace Core {
+	class EntManager;
+}
+
 namespace Classes::Engine::Core {
 	using EID = uint16_t;
 	using EName = std::string;
@@ -13,25 +17,31 @@ namespace Classes::Engine::Core {
 	/// Base class for all entities in the engine
 	/// </summary>
 	class Ent {
+		friend class ::Core::EntManager;
 	public:
 		// The entity's global index
-		const EID& GId;
+		const EID& EId;
 		// Human-readable entity name
 		EName Name = DEFAULT_NAME;
 
-		Ent(const std::string& Name) : Name(Name), GId(GId_) {}
+		Ent(const std::string& Name) : Name(Name), EId(EId_) {}
 
 		bool IsPendingDeath() const { return PendingDeath_; }
 		void Kill() {
 			PendingDeath_ = true;
 		}
+	protected:
+		virtual void OnInit() = 0;
+		virtual void OnStart() = 0;
+		virtual void OnUpdate() = 0;
+		virtual void OnRender() = 0;
 	private:
 		// Global Entity ID
-		EID GId_ = INVALID_ID;
-		bool PendingDeath_;
+		EID EId_ = INVALID_ID;
+		bool PendingDeath_ = false;
 
-		void SetGEID(const EID& GId) {
-			GId_ = GId;
+		void SetEID(const EID& EId) {
+			EId_ = EId;
 		}
 	};
 }

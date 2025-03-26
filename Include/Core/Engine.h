@@ -5,12 +5,14 @@
 #include "Core/AppWindow.h"
 #include "Graphics/IGraphics.h"
 
+#include "EntManager.h"
+
 #include "Graphics/DirectX11/DX11Graphics.h"
 #include "Graphics/DirectX11/DX11Geometry.h"
 
-namespace KKAM::Core {
-	using DX11 = KKAM::Graphics::DX11Graphics;
-	using DX11Geometry = KKAM::Graphics::DX11Geometry;
+namespace Core {
+	using DX11 = Graphics::DX11Graphics;
+	using DX11Geometry = Graphics::DX11Geometry;
 	class Engine {
 	public:
 		/// <summary>
@@ -39,8 +41,10 @@ namespace KKAM::Core {
 		bool IsRunning() const { return IsRunning_; }
 		std::shared_ptr<AppWindow> GetAppWindow() const { return AppWindow_; }
 		std::shared_ptr<DX11> GetGraphics() const { return Graphics_; }
+		std::shared_ptr<EntManager> GetEntManager() const { return EntManager_; }
 		float GetDeltaTime() const { return DeltaTime_; }
 	private:
+		std::shared_ptr<EntManager> EntManager_;
 		std::shared_ptr<AppWindow> AppWindow_;
 		std::shared_ptr<DX11> Graphics_;
 		bool IsRunning_ = false;

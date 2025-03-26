@@ -2,7 +2,7 @@
 
 #include "Common/Common.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	class ShaderBlob {
 	public:
 		static ComPtr<ID3DBlob> LoadShaderBlob(const std::string& path, const std::string& entryPoint, const std::string& shaderModel) {

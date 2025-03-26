@@ -1,7 +1,7 @@
 #include "Graphics/DirectX11/DX11Graphics.h"
 #include "Core/Engine.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	void DX11Graphics::Initialize() {
 		CreateDevice();          // First, create the device
 		CreateViewport();        // Second, set up viewport dimensions

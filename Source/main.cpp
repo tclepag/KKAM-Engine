@@ -1,7 +1,7 @@
 #include <windows.h>
 #include "Core/Engine.h"
 
-using KKAM::Core::Engine;
+using Core::Engine;
 
 int WINAPI WinMain(
     _In_ HINSTANCE hInstance,

@@ -2,12 +2,12 @@
 
 #include "Common/Common.h"
 
-namespace KKAM::Core {
+namespace Core {
 	class Engine;
 }
 
-namespace KKAM::Graphics {
-	using KKAM::Core::Engine;
+namespace Graphics {
+	using Core::Engine;
 	class IGraphics {
 	public:
 		IGraphics(Engine* engine) : Engine_(engine) {}
@@ -41,4 +41,4 @@ namespace KKAM::Graphics {
 
 		virtual void InitializeImGui() = 0;
 	};
-} // namespace KKAM::Graphics
+} // namespace Graphics

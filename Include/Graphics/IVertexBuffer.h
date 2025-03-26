@@ -2,7 +2,7 @@
 
 #include "Common/Common.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 
 	template<typename ContextType>
 	class IVertexBuffer {
@@ -14,4 +14,4 @@ namespace KKAM::Graphics {
 		virtual void SetData(VertexArray Vertices) = 0;
 		virtual void Release() = 0;
 	};
-} // namespace KKAM::Graphics
+} // namespace Graphics

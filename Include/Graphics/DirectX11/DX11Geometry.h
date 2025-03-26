@@ -7,7 +7,7 @@
 #include "Graphics/DirectX11/DX11IndexBuffer.h"
 #include "Graphics/DirectX11/DX11Shader.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	class DX11Geometry : public IGeometry {
 	public:
 		DX11Geometry(Engine* Engine, ID3D11Device* Device);

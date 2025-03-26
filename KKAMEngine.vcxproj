@@ -226,6 +226,8 @@ if exist "$(OutDir)" (
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Classes\Engine\Core\Ent.cpp" />
+    <ClCompile Include="Source\Core\EntManager.cpp" />
     <ClCompile Include="Source\Graphics\DirectX11\DX11Geometry.cpp" />
     <ClCompile Include="Source\Graphics\DirectX11\DX11Graphics.cpp" />
     <ClCompile Include="Source\Graphics\DirectX11\DX11IndexBuffer.cpp" />
@@ -242,9 +244,11 @@ if exist "$(OutDir)" (
     <ClInclude Include="Include\Classes\Engine\Core\Ent.h" />
     <ClInclude Include="Include\Classes\Engine\Core\EntObj.h" />
     <ClInclude Include="Include\Classes\Engine\Core\Mod.h" />
+    <ClInclude Include="Include\Classes\Engine\Scene.h" />
     <ClInclude Include="Include\Common\Common.h" />
     <ClInclude Include="Include\Core\AppWindow.h" />
     <ClInclude Include="Include\Core\Engine.h" />
+    <ClInclude Include="Include\Core\EntManager.h" />
     <ClInclude Include="Include\Graphics\DirectX11\DX11Geometry.h" />
     <ClInclude Include="Include\Graphics\DirectX11\DX11Graphics.h" />
     <ClInclude Include="Include\Graphics\DirectX11\DX11IndexBuffer.h" />

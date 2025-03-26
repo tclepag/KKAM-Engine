@@ -1,6 +1,6 @@
 #include "Graphics/DirectX11/DX11IndexBuffer.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	DX11IndexBuffer::DX11IndexBuffer(ID3D11Device* Device)
 		: Device_(Device) {
 		Device_->GetImmediateContext(DeviceContext_.GetAddressOf());

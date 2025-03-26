@@ -2,7 +2,7 @@
 
 #include "Graphics/IIndexBuffer.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 	class DX11IndexBuffer : public IIndexBuffer<ID3D11DeviceContext*> {
 	public:
 		DX11IndexBuffer(ID3D11Device* Device);

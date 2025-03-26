@@ -3,7 +3,7 @@
 #include "Graphics/IShader.h"
 #include "Graphics/ShaderBlob.h"
 
-namespace KKAM::Graphics {
+namespace Graphics {
 
 	struct TransformBufferType {
 		glm::mat4 World;
