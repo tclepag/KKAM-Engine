@@ -239,8 +239,10 @@ if exist "$(OutDir)" (
     <ResourceCompile Include="KKAMEngine.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Classes\Engine\Core\Ent.h" />
+    <ClInclude Include="Include\Classes\Engine\Core\EntObj.h" />
+    <ClInclude Include="Include\Classes\Engine\Core\Mod.h" />
     <ClInclude Include="Include\Common\Common.h" />
-    <ClInclude Include="Include\Common\ImGuiConsole.h" />
     <ClInclude Include="Include\Core\AppWindow.h" />
     <ClInclude Include="Include\Core\Engine.h" />
     <ClInclude Include="Include\Graphics\DirectX11\DX11Geometry.h" />
@@ -253,6 +255,7 @@ if exist "$(OutDir)" (
     <ClInclude Include="Include\Graphics\IIndexBuffer.h" />
     <ClInclude Include="Include\Graphics\IShader.h" />
     <ClInclude Include="Include\Graphics\IVertexBuffer.h" />
+    <ClInclude Include="Include\Graphics\ShaderBlob.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

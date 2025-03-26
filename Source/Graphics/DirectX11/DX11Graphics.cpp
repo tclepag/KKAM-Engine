@@ -16,17 +16,16 @@ namespace KKAM::Graphics {
 	}
 
 	void DX11Graphics::InitializeImGui() {
+		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+		io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
 		io.IniFilename = "Config/imgui.ini";
 		io.FontGlobalScale = 1.0f;
-
 		ImGui_ImplWin32_Init(Engine_->GetAppWindow()->GetHWND());
 		ImGui_ImplDX11_Init(Device_.Get(), DeviceContext_.Get());
-
 	}
 
 	void DX11Graphics::Redraw() {
@@ -57,8 +56,6 @@ namespace KKAM::Graphics {
 
 		DeviceContext_->OMSetRenderTargets(1, RenderTargetView_.GetAddressOf(), DepthStencilView_.Get());
 		DeviceContext_->RSSetViewports(1, &Viewport_);
-
-		Render(LastRenderOperation_);
 	}
 	void DX11Graphics::Render(std::function<void()> RenderOperation) {
 		if (!RenderActive_) {
@@ -100,7 +97,7 @@ namespace KKAM::Graphics {
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-		SwapChain_->Present(1, 0);
+		SwapChain_->Present(0, 0);
 		LastRenderOperation_ = RenderOperation;
 	}
 	void DX11Graphics::Shutdown() {

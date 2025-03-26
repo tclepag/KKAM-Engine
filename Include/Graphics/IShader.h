@@ -26,5 +26,7 @@ namespace KKAM::Graphics {
 		Engine* Engine_;
 		std::string VertexPath_;
 		std::string FragmentPath_;
+		ComPtr<ID3DBlob> VertexBlob_;
+		ComPtr<ID3DBlob> PixelBlob_;
 	};
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Graphics/IShader.h"
+#include "Graphics/ShaderBlob.h"
 
 namespace KKAM::Graphics {
 
@@ -22,6 +23,8 @@ namespace KKAM::Graphics {
 		void Unbind(ID3D11DeviceContext*) override;
 		void SetVertexPath(const std::string& path) override;
 		void SetFragmentPath(const std::string& path) override;
+		void SetInputElement(const std::vector<D3D11_INPUT_ELEMENT_DESC>& layout);
+		void SetInputBufferDesc(D3D11_BUFFER_DESC desc);
 		void Release() override;
 	private:
 		ID3D11Device* Device_;
@@ -30,5 +33,10 @@ namespace KKAM::Graphics {
 		ComPtr<ID3D11PixelShader> PixelShader_;
 		ComPtr<ID3D11InputLayout> InputLayout_;
 		ComPtr<ID3D11Buffer> TransformBuffer_;
+		std::vector<D3D11_INPUT_ELEMENT_DESC> InputElementDesc_ = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		};
+		D3D11_BUFFER_DESC TransformBufferDesc_{};
 	};
 }

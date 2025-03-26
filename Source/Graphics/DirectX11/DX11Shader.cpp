@@ -5,6 +5,12 @@ namespace KKAM::Graphics {
 	DX11Shader::DX11Shader(Engine* Engine, ID3D11Device* device)
 		: Device_(device), IShader(Engine) {
 		Device_->GetImmediateContext(DeviceContext_.GetAddressOf());
+		TransformBufferDesc_.Usage = D3D11_USAGE_DYNAMIC;
+		TransformBufferDesc_.ByteWidth = sizeof(TransformBufferType);
+		TransformBufferDesc_.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		TransformBufferDesc_.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		TransformBufferDesc_.MiscFlags = 0;
+		TransformBufferDesc_.StructureByteStride = 0;
 	}
 	DX11Shader::~DX11Shader() {
 		Release();
@@ -12,112 +18,39 @@ namespace KKAM::Graphics {
 	void DX11Shader::Create() {
 		if (VertexPath_.empty() || FragmentPath_.empty()) return;
 		// Load and compile vertex shader
-		ComPtr<ID3DBlob> vertexShaderBlob;
-		auto vertexHLSLPath = VertexPath_ + ".hlsl";
-		auto vertexCSOPath = VertexPath_ + ".cso";
-		HRESULT hr;
-		if (std::filesystem::exists(vertexCSOPath)) {
-			hr = D3DReadFileToBlob(StringToWString(vertexCSOPath).c_str(), vertexShaderBlob.GetAddressOf());
-			if (FAILED(hr)) {
-				throw std::runtime_error("Failed to read vertex shader from file");
-			}
-			OutputDebugStringA("Vertex shader loaded successfully\n");
-			Engine_->GetConsole().LogInfo("Vertex shader loaded successfully");
-		}
-		else {
-			hr = D3DCompileFromFile(
-				StringToWString(VertexPath_ + ".hlsl").c_str(),
-				nullptr,
-				nullptr,
-				"main",
-				"vs_5_0",
-				0,
-				0,
-				&vertexShaderBlob,
-				nullptr
-			);
-			if (FAILED(hr)) {
-				throw std::runtime_error("Failed to compile vertex shader");
-			}
-			OutputDebugStringA("Vertex shader compiled successfully\n");
-			Engine_->GetConsole().LogInfo("Vertex shader compiled successfully");
-		}
-		// Create vertex shader
-		hr = Device_->CreateVertexShader(
-			vertexShaderBlob->GetBufferPointer(),
-			vertexShaderBlob->GetBufferSize(),
+		VertexBlob_ = ShaderBlob::LoadShaderBlob(VertexPath_, "main", "vs_5_0");
+		HRESULT hr = Device_->CreateVertexShader(
+			VertexBlob_->GetBufferPointer(),
+			VertexBlob_->GetBufferSize(),
 			nullptr,
 			VertexShader_.GetAddressOf()
 		);
 		if (FAILED(hr)) {
 			throw std::runtime_error("Failed to create vertex shader");
 		}
-		// Define the input layout
-		D3D11_INPUT_ELEMENT_DESC layout[] = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-		UINT numElements = ARRAYSIZE(layout);
+
 		// Create the input layout
 		hr = Device_->CreateInputLayout(
-			layout,
-			numElements,
-			vertexShaderBlob->GetBufferPointer(),
-			vertexShaderBlob->GetBufferSize(),
+			InputElementDesc_.data(),
+			static_cast<UINT>(InputElementDesc_.size()),
+			VertexBlob_->GetBufferPointer(),
+			VertexBlob_->GetBufferSize(),
 			InputLayout_.GetAddressOf()
 		);
 		if (FAILED(hr)) {
 			throw std::runtime_error("Failed to create input layout");
 		}
 
-		D3D11_BUFFER_DESC transformBufferDesc = {};
-		transformBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		transformBufferDesc.ByteWidth = sizeof(TransformBufferType); // Define this struct
-		transformBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		transformBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		transformBufferDesc.MiscFlags = 0;
-		transformBufferDesc.StructureByteStride = 0;
-
-		hr = Device_->CreateBuffer(&transformBufferDesc, nullptr, TransformBuffer_.GetAddressOf());
+		hr = Device_->CreateBuffer(&TransformBufferDesc_, nullptr, TransformBuffer_.GetAddressOf());
 		if (FAILED(hr)) {
 			throw std::runtime_error("Failed to create transform constant buffer");
 		}
 
 		// Load and compile pixel shader
-		ComPtr<ID3DBlob> pixelShaderBlob;
-		auto pixelHLSLPath = FragmentPath_ + ".hlsl";
-		auto pixelCSOPath = FragmentPath_ + ".cso";
-		if (std::filesystem::exists(pixelCSOPath)) {
-			hr = D3DReadFileToBlob(StringToWString(pixelCSOPath).c_str(), pixelShaderBlob.GetAddressOf());
-			if (FAILED(hr)) {
-				throw std::runtime_error("Failed to read pixel shader from file");
-			}
-
-			OutputDebugStringA("Pixel shader loaded successfully\n");
-			Engine_->GetConsole().LogInfo("Pixel shader loaded successfully");
-		}
-		else {
-			hr = D3DCompileFromFile(
-				StringToWString(FragmentPath_ + ".hlsl").c_str(),
-				nullptr,
-				nullptr,
-				"main",
-				"ps_5_0",
-				0,
-				0,
-				&pixelShaderBlob,
-				nullptr
-			);
-			if (FAILED(hr)) {
-				throw std::runtime_error("Failed to compile pixel shader");
-			}
-			OutputDebugStringA("Pixel shader compiled successfully\n");
-			Engine_->GetConsole().LogInfo("Pixel shader compiled successfully");
-		}
-		// Create pixel shader
+		PixelBlob_ = ShaderBlob::LoadShaderBlob(FragmentPath_, "main", "ps_5_0");
 		hr = Device_->CreatePixelShader(
-			pixelShaderBlob->GetBufferPointer(),
-			pixelShaderBlob->GetBufferSize(),
+			PixelBlob_->GetBufferPointer(),
+			PixelBlob_->GetBufferSize(),
 			nullptr,
 			PixelShader_.GetAddressOf()
 		);
@@ -167,6 +100,17 @@ namespace KKAM::Graphics {
 
 	void DX11Shader::SetFragmentPath(const std::string& path) {
 		FragmentPath_ = path;
+	}
+
+	void DX11Shader::SetInputElement(const std::vector<D3D11_INPUT_ELEMENT_DESC>& layout)
+	{
+		InputElementDesc_ = layout;
+
+	}
+
+	void DX11Shader::SetInputBufferDesc(D3D11_BUFFER_DESC desc)
+	{
+		TransformBufferDesc_ = desc;
 	}
 
 	void DX11Shader::Release() {

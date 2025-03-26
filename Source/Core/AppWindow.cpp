@@ -1,5 +1,7 @@
 #include "Core/AppWindow.h"
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 namespace KKAM::Core {
 	AppWindow::~AppWindow() {
 		Shutdown();
@@ -84,59 +86,27 @@ namespace KKAM::Core {
 	}
 
 	LRESULT CALLBACK AppWindow::WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-		ImGuiIO& io = ImGui::GetIO();
-
-		switch (msg) {
-		case WM_LBUTTONDOWN:
-			io.MouseDown[0] = true;
-			return 0;
-		case WM_LBUTTONUP:
-			io.MouseDown[0] = false;
-			return 0;
-		case WM_RBUTTONDOWN:
-			io.MouseDown[1] = true;
-			return 0;
-		case WM_RBUTTONUP:
-			io.MouseDown[1] = false;
-			return 0;
-		case WM_MOUSEWHEEL:
-			io.MouseWheel += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
-			return 0;
-		case WM_MOUSEMOVE:
-			io.MousePos.x = (signed short)(lParam);
-			io.MousePos.y = (signed short)(lParam >> 16);
-			return 0;
-		case WM_KEYDOWN:
-			if (wParam < 256)
-				io.AddKeyEvent(ImGuiKey(wParam), true);
-			return 0;
-		case WM_KEYUP:
-			if (wParam < 256)
-				io.AddKeyEvent(ImGuiKey(wParam), false);
-			return 0;
-		case WM_CHAR:
-			if (wParam > 0 && wParam < 0x10000)
-				io.AddInputCharacter((unsigned short)wParam);
-			return 0;
-		}
-
-
 		AppWindow* pThis = NULL;
-
 		if (msg == WM_NCCREATE) {
 			CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
 			pThis = reinterpret_cast<AppWindow*>(pCreate->lpCreateParams);
 			SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pThis));
 		}
 		else {
-			// For all other messages, get the pointer we stored
 			pThis = reinterpret_cast<AppWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 		}
+
+		if (ImGui::GetCurrentContext() != nullptr) {
+			if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam)) {
+				return true;
+			}
+		}
+
+		// Process custom window hooks
 		if (pThis) {
 			for (auto& [proc, hookData] : pThis->Procs_) {
 				if (hookData.Msg == msg) {
 					for (auto& procFunc : hookData.Procs) {
-
 						procFunc(msg, wParam, lParam);
 					}
 					if (hookData.Override) {
@@ -145,6 +115,7 @@ namespace KKAM::Core {
 				}
 			}
 		}
+
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 }

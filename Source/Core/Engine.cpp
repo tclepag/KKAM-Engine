@@ -6,6 +6,13 @@
 
 namespace KKAM::Core {
 	void Engine::Initialize() {
+		// Initialize ImGui
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO();
+		io.IniFilename = "Config/imgui.ini";
+		io.FontGlobalScale = 1.0f;
+
 		// Initialize the application window
 		AppWindowSettings settings{};
 		settings.Width = 1280;
@@ -23,9 +30,6 @@ namespace KKAM::Core {
 		// Initialize graphics
 		Graphics_ = std::make_shared<DX11>(this);
 		Graphics_->Initialize();
-
-		// Initialize ImGui
-
 
 		// Setup window hooks
 
@@ -46,7 +50,7 @@ namespace KKAM::Core {
 		);
 
 		AppWindow_->HookProc("RenderPause", "BaseRenderPause", [this](UINT Msg, WPARAM wParam, LPARAM lParam) {
-			SetTimer(AppWindow_->GetHWND(), 2, 16, NULL);
+			SetTimer(AppWindow_->GetHWND(), 2, 45, NULL);
 			}
 		);
 
@@ -58,6 +62,8 @@ namespace KKAM::Core {
 		AppWindow_->HookProc("GraphicsResizeTime", "RenderTimer", [this](UINT Msg, WPARAM wParam, LPARAM lParam) {
 			if (wParam == 2) {
 				Graphics_->HandleResize();
+				Update();
+				Render();
 			}
 			}
 		);
@@ -183,7 +189,5 @@ namespace KKAM::Core {
 		ImGui::Text("FPS: %.1f", 1.0f / DeltaTime_);
 		ImGui::End();
 		ImGui::PopStyleVar();
-
-		Console_.Render();
 	}
 } // namespace KKAM::Core

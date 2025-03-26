@@ -88,7 +88,16 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Common\ImGuiConsole.h">
+    <ClInclude Include="Include\Graphics\ShaderBlob.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Classes\Engine\Core\Ent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Classes\Engine\Core\EntObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Classes\Engine\Core\Mod.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
