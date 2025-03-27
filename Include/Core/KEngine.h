@@ -2,10 +2,10 @@
 
 #include <memory>
 #include <iostream>
-#include "Core/AppWindow.h"
+#include "Core/KWindow.h"
 #include "Graphics/IGraphics.h"
 
-#include "EntManager.h"
+#include "KEntityRegistry.h"
 
 #include "Graphics/DirectX11/DX11Graphics.h"
 #include "Graphics/DirectX11/DX11Geometry.h"
@@ -13,50 +13,45 @@
 namespace Core {
 	using DX11 = Graphics::DX11Graphics;
 	using DX11Geometry = Graphics::DX11Geometry;
-	class Engine {
+	class KEngine {
 	public:
 		/// <summary>
-		/// Sets up the engine
+		/// Sets up the KEngine
 		/// </summary>
 		void Initialize();
 		/// <summary>
-		/// Begins the engine loop
+		/// Begins the KEngine loop
 		/// </summary>
 		void Run();
 		/// <summary>
-		/// Frees all engine resources and closes application
+		/// Frees all KEngine resources and closes application
 		/// </summary>
 		void Shutdown();
 		/// <summary>
-		/// Handles engine update loop
+		/// Handles KEngine update loop
 		/// </summary>
 		void Update();
 		/// <summary>
-		/// Handles engine render loop
+		/// Handles KEngine render loop
 		/// </summary>
 		void Render();
 
 		// Getters
 
 		bool IsRunning() const { return IsRunning_; }
-		std::shared_ptr<AppWindow> GetAppWindow() const { return AppWindow_; }
+		std::shared_ptr<KWindow> GetAppWindow() const { return AppWindow_; }
 		std::shared_ptr<DX11> GetGraphics() const { return Graphics_; }
-		std::shared_ptr<EntManager> GetEntManager() const { return EntManager_; }
+		std::shared_ptr<KEntityRegistry> GetEntManager() const { return EntManager_; }
 		float GetDeltaTime() const { return DeltaTime_; }
 	private:
-		std::shared_ptr<EntManager> EntManager_;
-		std::shared_ptr<AppWindow> AppWindow_;
+		std::shared_ptr<KEntityRegistry> EntManager_;
+		std::shared_ptr<KWindow> AppWindow_;
 		std::shared_ptr<DX11> Graphics_;
 		bool IsRunning_ = false;
-
 		float RotAngle_ = 0.0f;
-
 		float DeltaTime_ = 0.0f;
 		std::chrono::steady_clock::time_point LastTime_ = std::chrono::steady_clock::now();
-
-
 		DX11Geometry* Geometry_;
-
 		void DrawGeometry();
 	};
 }

@@ -3,14 +3,14 @@
 #include "Common/Common.h"
 
 namespace Core {
-	class Engine;
+	class KEngine;
 }
 
 namespace Graphics {
-	using Core::Engine;
+	using Core::KEngine;
 	class IGraphics {
 	public:
-		IGraphics(Engine* engine) : Engine_(engine) {}
+		IGraphics(KEngine* KEngine) : Engine_(KEngine) {}
 		virtual ~IGraphics() = default;
 		virtual void Initialize() = 0;
 		virtual void HandleResize() = 0;
@@ -32,10 +32,10 @@ namespace Graphics {
 
 		// Getters
 
-		Engine* GetEngine() const { return Engine_; }
+		KEngine* GetEngine() const { return Engine_; }
 		bool IsRenderActive() const { return RenderActive_; }
 	protected:
-		Engine* Engine_;
+		KEngine* Engine_;
 		std::function<void()> LastRenderOperation_;
 		bool RenderActive_ = true;
 

@@ -1,12 +1,12 @@
-#include "Core/AppWindow.h"
+#include "Core/KWindow.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace Core {
-	AppWindow::~AppWindow() {
+	KWindow::~KWindow() {
 		Shutdown();
 	}
-	bool AppWindow::Initialize(const AppWindowSettings& WinSettings) {
+	bool KWindow::Initialize(const AppWindowSettings& WinSettings) {
 		WNDCLASSEX wc = { sizeof(WNDCLASSEX) };
 		wc.cbSize = sizeof(WNDCLASSEX);
 		wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -15,7 +15,7 @@ namespace Core {
 		wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 		wc.hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_KKAMENGINE));
-		wc.lpfnWndProc = &AppWindow::WinProc;
+		wc.lpfnWndProc = &KWindow::WinProc;
 
 		if (!RegisterClassEx(&wc)) {
 			return false;
@@ -54,7 +54,7 @@ namespace Core {
 
 		return true;
 	}
-	WinEvProcResult AppWindow::Process() {
+	WinEvProcResult KWindow::Process() {
 		while (PeekMessage(&WinMSG_, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&WinMSG_);
 			DispatchMessage(&WinMSG_);
@@ -67,17 +67,17 @@ namespace Core {
 		}
 		return WinEvProcResult::OK;
 	}
-	void AppWindow::Shutdown() {
+	void KWindow::Shutdown() {
 		if (WinHWND_) {
 			DestroyWindow(WinHWND_);
 			UnregisterClass(L"KKAMWINDOWCLASS", GetModuleHandle(NULL));
 			WinHWND_ = NULL;
 		}
 	}
-	void AppWindow::RegisterProc(UINT Msg, string ProcName, bool Override) {
+	void KWindow::RegisterProc(UINT Msg, string ProcName, bool Override) {
 		Procs_[ProcName] = WinProcHook{ Msg, {}, Override };
 	}
-	void AppWindow::HookProc(string ProcName, string HookName, std::function<void(UINT, WPARAM, LPARAM)> Proc) {
+	void KWindow::HookProc(string ProcName, string HookName, std::function<void(UINT, WPARAM, LPARAM)> Proc) {
 		for (auto& [proc, hookData] : Procs_) {
 			if (proc == ProcName) {
 				hookData.Procs.push_back(Proc);
@@ -85,15 +85,15 @@ namespace Core {
 		}
 	}
 
-	LRESULT CALLBACK AppWindow::WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-		AppWindow* pThis = NULL;
+	LRESULT CALLBACK KWindow::WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+		KWindow* pThis = NULL;
 		if (msg == WM_NCCREATE) {
 			CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
-			pThis = reinterpret_cast<AppWindow*>(pCreate->lpCreateParams);
+			pThis = reinterpret_cast<KWindow*>(pCreate->lpCreateParams);
 			SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pThis));
 		}
 		else {
-			pThis = reinterpret_cast<AppWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+			pThis = reinterpret_cast<KWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 		}
 
 		if (ImGui::GetCurrentContext() != nullptr) {

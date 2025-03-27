@@ -3,15 +3,15 @@
 #include "Common/Common.h"
 
 namespace Core {
-	class Engine;
+	class KEngine;
 }
 
 namespace Graphics {
-	using Core::Engine;
+	using Core::KEngine;
 	template<typename ContextType>
 	class IShader {
 	public:
-		IShader(Engine* engine) : Engine_(engine) {}
+		IShader(KEngine* KEngine) : Engine_(KEngine) {}
 		virtual ~IShader() = default;
 		virtual void Create() = 0;
 		virtual void SetTransformationMatrices(const glm::mat4& world,
@@ -23,7 +23,7 @@ namespace Graphics {
 		virtual void SetFragmentPath(const std::string& path) = 0;
 		virtual void Release() = 0;
 	protected:
-		Engine* Engine_;
+		KEngine* Engine_;
 		std::string VertexPath_;
 		std::string FragmentPath_;
 		ComPtr<ID3DBlob> VertexBlob_;

@@ -10,7 +10,7 @@
 namespace Graphics {
 	class DX11Geometry : public IGeometry {
 	public:
-		DX11Geometry(Engine* Engine, ID3D11Device* Device);
+		DX11Geometry(KEngine* KEngine, ID3D11Device* Device);
 		~DX11Geometry();
 		void Create() override;
 		void Rebake() override;

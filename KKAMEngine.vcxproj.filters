@@ -18,10 +18,10 @@
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Engine.cpp">
+    <ClCompile Include="Source\Core\KEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\AppWindow.cpp">
+    <ClCompile Include="Source\Core\KWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\DirectX11\DX11VertexBuffer.cpp">
@@ -39,10 +39,13 @@
     <ClCompile Include="Source\Graphics\DirectX11\DX11Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\EntManager.cpp">
+    <ClCompile Include="Source\Classes\Engine\Core\KEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Classes\Engine\Core\Ent.cpp">
+    <ClCompile Include="Source\Classes\Engine\Core\KObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\KEntityRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -52,10 +55,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\Core\Engine.h">
+    <ClInclude Include="Include\Core\KEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\AppWindow.h">
+    <ClInclude Include="Include\Core\KWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Graphics\IGraphics.h">
@@ -97,19 +100,19 @@
     <ClInclude Include="Include\Graphics\ShaderBlob.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Classes\Engine\Core\Ent.h">
+    <ClInclude Include="Include\Classes\Engine\Core\KEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Classes\Engine\Core\EntObj.h">
+    <ClInclude Include="Include\Classes\Engine\Core\KObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Classes\Engine\Core\Mod.h">
+    <ClInclude Include="Include\Classes\Engine\Core\KModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\EntManager.h">
+    <ClInclude Include="Include\Classes\Engine\KScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Classes\Engine\Scene.h">
+    <ClInclude Include="Include\Core\KEntityRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

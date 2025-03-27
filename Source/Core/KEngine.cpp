@@ -1,11 +1,11 @@
-#include "Core/Engine.h"
+#include "Core/KEngine.h"
 
 #include <ostream>
 #include <iomanip>
 #include <stdio.h>
 
 namespace Core {
-	void Engine::Initialize() {
+	void KEngine::Initialize() {
 		// Initialize ImGui
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -17,9 +17,9 @@ namespace Core {
 		AppWindowSettings settings{};
 		settings.Width = 1280;
 		settings.Height = 720;
-		settings.Title = L"KKAM Engine";
+		settings.Title = L"KKAM KEngine";
 
-		AppWindow_ = std::make_shared<AppWindow>();
+		AppWindow_ = std::make_shared<KWindow>();
 		AppWindow_->Initialize(settings);
 
 		while (!AppWindow_->IsInitialized())
@@ -27,8 +27,8 @@ namespace Core {
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // Wait for the window to be initialized
 		}
 
-		// Setup Ent Manager
-		EntManager_ = std::make_shared<EntManager>();
+		// Setup KEntity Manager
+		EntManager_ = std::make_shared<KEntityRegistry>(this);
 
 		// Initialize graphics
 		Graphics_ = std::make_shared<DX11>(this);
@@ -108,15 +108,18 @@ namespace Core {
 		Geometry_->SetFragmentPath("Content/Shaders/Default/BasicPixel");
 		Geometry_->SetWorldMatrix(glm::mat4(1.0f));
 		Geometry_->Create();
+
+		auto Ent = new KEntity("ENTITY");
+		EntManager_->RegisterEntity(Ent);
 	}
-	void Engine::Run() {
+	void KEngine::Run() {
 		IsRunning_ = true;
 		while (IsRunning_) {
 			Update();
 			Render();
 		}
 	}
-	void Engine::Shutdown() {
+	void KEngine::Shutdown() {
 		if (AppWindow_) {
 			AppWindow_->Shutdown();
 			AppWindow_.reset();
@@ -133,7 +136,7 @@ namespace Core {
 			Geometry_ = nullptr;
 		}
 	}
-	void Engine::Update() {
+	void KEngine::Update() {
 		WinEvProcResult result = AppWindow_->Process();
 
 		if (result == WinEvProcResult::ERR) {
@@ -145,7 +148,7 @@ namespace Core {
 			IsRunning_ = false;
 		}
 	}
-	void Engine::Render() {
+	void KEngine::Render() {
 		if (!Graphics_->IsRenderActive()) {
 			return;
 		}
@@ -159,7 +162,7 @@ namespace Core {
 			});
 	}
 
-	void Engine::DrawGeometry() {
+	void KEngine::DrawGeometry() {
 		float aspectRatio = static_cast<float>(AppWindow_->GetWidth()) / static_cast<float>(AppWindow_->GetHeight());
 		glm::mat4 projMatrix = glm::perspectiveLH(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
 

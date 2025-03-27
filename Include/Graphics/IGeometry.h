@@ -3,14 +3,14 @@
 #include "Common/Common.h"
 
 namespace Core {
-	class Engine;
+	class KEngine;
 }
 
 namespace Graphics {
-	using Core::Engine;
+	using Core::KEngine;
 	class IGeometry {
 	public:
-		IGeometry(Engine* engine) : Engine_(engine) {}
+		IGeometry(KEngine* KEngine) : Engine_(KEngine) {}
 		virtual ~IGeometry() = default;
 		virtual void Create() = 0;
 		virtual void Rebake() = 0;
@@ -32,7 +32,7 @@ namespace Graphics {
 		glm::mat4 GetViewMatrix() const { return ViewMatrix_; }
 		glm::mat4 GetProjectionMatrix() const { return ProjectionMatrix_; }
 	protected:
-		Engine* Engine_;
+		KEngine* Engine_;
 		std::string VertexPath_;
 		std::string FragmentPath_;
 		glm::mat4 WorldMatrix_;

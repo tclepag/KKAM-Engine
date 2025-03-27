@@ -1,7 +1,8 @@
 #include <windows.h>
-#include "Core/Engine.h"
+#include "Core/KEngine.h"
+#include <exception>
 
-using Core::Engine;
+using Core::KEngine;
 
 int WINAPI WinMain(
     _In_ HINSTANCE hInstance,
@@ -11,11 +12,11 @@ int WINAPI WinMain(
 )
 {
     try {
-        auto* engine = new Engine();
-		engine->Initialize();
-		engine->Run();
-		engine->Shutdown();
-		delete engine;
+        auto* kEngine = new KEngine();
+        kEngine->Initialize();
+        kEngine->Run();
+        kEngine->Shutdown();
+		delete kEngine;
         return 0;
 	}
     catch (const std::exception& e) {

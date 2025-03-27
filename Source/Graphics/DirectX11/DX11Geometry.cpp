@@ -1,12 +1,12 @@
 #include "Graphics/DirectX11/DX11Geometry.h"
-#include "Core/Engine.h"
+#include "Core/KEngine.h"
 
 namespace Graphics {
-	DX11Geometry::DX11Geometry(Engine* Engine, ID3D11Device* Device)
-		: Device_(Device), IGeometry(Engine) {
+	DX11Geometry::DX11Geometry(KEngine* KEngine, ID3D11Device* Device)
+		: Device_(Device), IGeometry(KEngine) {
 		VertexBuffer_ = std::make_unique<DX11VertexBuffer>(Device_);
 		IndexBuffer_ = std::make_unique<DX11IndexBuffer>(Device_);
-		Shader_ = std::make_unique<DX11Shader>(Engine, Device_);
+		Shader_ = std::make_unique<DX11Shader>(KEngine, Device_);
 		Device_->GetImmediateContext(DeviceContext_.GetAddressOf());
 	}
 	DX11Geometry::~DX11Geometry() {

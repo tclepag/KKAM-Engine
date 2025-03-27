@@ -13,7 +13,7 @@ namespace Graphics {
 
 	class DX11Shader : public IShader<ID3D11DeviceContext*> {
 	public:
-		DX11Shader(Engine* Engine, ID3D11Device* device);
+		DX11Shader(KEngine* KEngine, ID3D11Device* device);
 		~DX11Shader();
 		void Create() override;
 		void SetTransformationMatrices(const glm::mat4& world,

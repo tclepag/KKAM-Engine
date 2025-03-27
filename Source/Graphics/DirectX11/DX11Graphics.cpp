@@ -1,5 +1,5 @@
 #include "Graphics/DirectX11/DX11Graphics.h"
-#include "Core/Engine.h"
+#include "Core/KEngine.h"
 
 namespace Graphics {
 	void DX11Graphics::Initialize() {

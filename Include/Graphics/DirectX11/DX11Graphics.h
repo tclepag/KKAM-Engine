@@ -3,13 +3,15 @@
 #include "Graphics/IGraphics.h"
 
 namespace Core {
-	class Engine;
+	class KEngine;
 }
+
+using Core::KEngine;
 
 namespace Graphics {
 	class DX11Graphics : public IGraphics {
 	public:
-		DX11Graphics(Engine* engine) : IGraphics(engine) {}
+		DX11Graphics(KEngine* KEngine) : IGraphics(KEngine) {}
 		void Initialize() override;
 		void HandleResize() override;
 		void Redraw() override;

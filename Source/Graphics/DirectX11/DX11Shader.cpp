@@ -1,9 +1,9 @@
 #include "Graphics/DirectX11/DX11Shader.h"
-#include "Core/Engine.h"
+#include "Core/KEngine.h"
 
 namespace Graphics {
-	DX11Shader::DX11Shader(Engine* Engine, ID3D11Device* device)
-		: Device_(device), IShader(Engine) {
+	DX11Shader::DX11Shader(KEngine* KEngine, ID3D11Device* device)
+		: Device_(device), IShader(KEngine) {
 		Device_->GetImmediateContext(DeviceContext_.GetAddressOf());
 		TransformBufferDesc_.Usage = D3D11_USAGE_DYNAMIC;
 		TransformBufferDesc_.ByteWidth = sizeof(TransformBufferType);

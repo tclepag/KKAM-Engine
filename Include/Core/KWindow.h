@@ -25,9 +25,9 @@ namespace Core {
 		SHUTDOWN
 	};
 
-	class AppWindow {
+	class KWindow {
 	public:
-		~AppWindow();
+		~KWindow();
 		/// <summary>
 		/// Sets up the window
 		/// </summary>
