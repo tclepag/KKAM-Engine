@@ -5,7 +5,7 @@
 #include "Core/KWindow.h"
 #include "Graphics/IGraphics.h"
 
-#include "KEntityRegistry.h"
+#include "KRegistry.h"
 
 #include "Graphics/DirectX11/DX11Graphics.h"
 #include "Graphics/DirectX11/DX11Geometry.h"
@@ -41,10 +41,10 @@ namespace Core {
 		bool IsRunning() const { return IsRunning_; }
 		std::shared_ptr<KWindow> GetAppWindow() const { return AppWindow_; }
 		std::shared_ptr<DX11> GetGraphics() const { return Graphics_; }
-		std::shared_ptr<KEntityRegistry> GetEntManager() const { return EntManager_; }
+		std::shared_ptr<KRegistry> GetWorld() const { return Registry_; }
 		float GetDeltaTime() const { return DeltaTime_; }
 	private:
-		std::shared_ptr<KEntityRegistry> EntManager_;
+		std::shared_ptr<KRegistry> World_;
 		std::shared_ptr<KWindow> AppWindow_;
 		std::shared_ptr<DX11> Graphics_;
 		bool IsRunning_ = false;

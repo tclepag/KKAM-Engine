@@ -28,7 +28,7 @@ namespace Core {
 		}
 
 		// Setup KEntity Manager
-		EntManager_ = std::make_shared<KEntityRegistry>(this);
+		World_ = std::make_shared<KRegistry>(this);
 
 		// Initialize graphics
 		Graphics_ = std::make_shared<DX11>(this);
